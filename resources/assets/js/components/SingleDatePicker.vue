@@ -1,5 +1,5 @@
 <template>
-  <datepicker placeholder="Date" :config="{ dateFormat: 'd/m/Y', static: false }"></datepicker>
+
 </template>
 
 <script>

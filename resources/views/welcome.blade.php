@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Laravel</title>
+        <title>- menergy -</title>
 
         <!-- Scripts -->
         <script>
@@ -18,68 +18,11 @@
     </head>
     <body>
         <div id="app" class="container">
-
             <menergy-tabs>
-                <menergy-tab name="Electricité" :selected="true">
-                <div class="box">
-                  graph goes here.
-                </div>
-                  <menergy-form></menergy-form>
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Date</th>
-                        <th>Relève</th>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                      <tr>
-                        <th>Date</th>
-                        <th>Relève</th>
-                      </tr>
-                    </tfoot>
-                    <tbody>
-                      <tr>
-                        <td>20/01/2017</td>
-                        <td>560</td>
-                      </tr>
-                      <tr>
-                        <td>20/01/2017</td>
-                        <td>560</td>
-                      </tr>
-                      <tr>
-                        <td>20/01/2017</td>
-                        <td>560</td>
-                      </tr>
-                      <tr>
-                        <td>20/01/2017</td>
-                        <td>560</td>
-                      </tr>
-                      <tr>
-                        <td>20/01/2017</td>
-                        <td>560</td>
-                      </tr>
-                      <tr>
-                        <td>20/01/2017</td>
-                        <td>560</td>
-                      </tr>
-                      <tr>
-                        <td>20/01/2017</td>
-                        <td>560</td>
-                      </tr>
-                      <tr>
-                        <td>20/01/2017</td>
-                        <td>560</td>
-                      </tr>
-                    </tbody>
-                </table>
-                </menergy-tab>
-                <menergy-tab name="Gaz">
-                  no content here.
-                </menergy-tab>
-
+                @foreach ($types as $type)
+                    <menergy-tab :type="{{ $type }}" @if ($loop->first) :selected="true" @endif></menergy-tab>
+                @endforeach
             </menergy-tabs>
-
         </div>
 
         <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>

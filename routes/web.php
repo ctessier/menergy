@@ -11,6 +11,5 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'MeasuresController@index');
+Route::get('/types/{type_id}', 'MeasuresController@get')->where('type_id', '[0-9]+');

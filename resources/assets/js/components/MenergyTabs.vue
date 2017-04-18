@@ -5,7 +5,7 @@
                 <li v-for="tab in tabs" :class="{ 'is-active': tab.isActive }">
                     <a @click="toTab(tab)">
                         <span class="icon is-medium"><i class="fa fa-bolt"></i></span>
-                        <span>{{ tab.name }}</span>
+                        <span>{{ tab.type.name }}</span>
                     </a>
                 </li>
             </ul>
@@ -29,8 +29,9 @@ export default {
     methods: {
         toTab(tab) {
             this.tabs.forEach(currentTab => {
-                currentTab.isActive = (currentTab.name == tab.name);
+                currentTab.isActive = (currentTab.type.name == tab.type.name);
             });
+            tab.fetchData();
         }
     }
 }
