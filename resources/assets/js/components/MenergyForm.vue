@@ -37,7 +37,21 @@ export default {
     methods: {
         submitForm() {
             this.isLoading = true;
-            this.$emit('success', this.$data);
+            axios.post('/measures', {
+                'date': this.date,
+                'value': this.value,
+                'type_id': this.$parent.type.id
+            })
+            .then(response => {
+                this.$emit('success', this.$data);
+                this.isLoading = false;
+                this.date = '';
+                this.value = '';
+            })
+            .catch(errors => {
+                console.log(errors);
+                this.isLoading = false;
+            });
         },
         setDate(value) {
             this.date = value;

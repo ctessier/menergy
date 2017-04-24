@@ -13,3 +13,4 @@
 
 Route::get('/', 'MeasuresController@index');
 Route::get('/types/{type_id}', 'MeasuresController@get')->where('type_id', '[0-9]+');
+Route::post('/measures', 'MeasuresController@post');
