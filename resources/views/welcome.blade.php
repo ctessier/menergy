@@ -13,7 +13,7 @@
             ]); ?>
         </script>
 
-        <link rel="stylesheet" type="text/css" href="{{ mix('/css/vendor.css') }}">
+        <!-- Styles -->
         <link rel="stylesheet" type="text/css" href="{{ mix('/css/app.css') }}">
     </head>
     <body>
