@@ -39,8 +39,8 @@ class MeasuresController extends Controller
     public function post()
     {
         $this->validate(request(), [
-            'date'     => 'required',
-            'value'    => 'required',
+            'date'     => 'required|date_format:d/m/Y',
+            'value'    => 'required|integer|min:1',
             'type_id'  => 'required|exists:types,id',
         ]);
 
