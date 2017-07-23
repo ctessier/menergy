@@ -3,7 +3,7 @@
         <div class="column is-3">
             <div class="field">
                 <p class="control">
-                    <datepicker placeholder="Date" :config="{ dateFormat: 'd/m/Y', static: false }" @input="setDate"></datepicker>
+                    <datepicker placeholder="Date" :config="{ dateFormat: 'd/m/Y', static: false }" v-model="date" @input="setDate"></datepicker>
                 </p>
             </div>
         </div>
@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="column is-2">
-            <a :class="['button', 'is-primary', { 'is-loading': isLoading } ]" @click="submitForm">Valider</a>
+            <a :class="['button', 'is-primary', { 'is-loading': isLoading } ]" :disabled="isLoading" @click="submitForm">Valider</a>
         </div>
     </div>
 </template>
@@ -45,14 +45,17 @@ export default {
             })
             .then(response => {
                 this.$emit('success', response.data);
-                this.isLoading = false;
-                this.date = '';
-                this.value = '';
+                this.resetForm();
             })
             .catch(errors => {
                 console.error(errors);
                 this.isLoading = false;
             });
+        },
+        resetForm() {
+            this.isLoading = false;
+            this.date = '';
+            this.value = '';
         },
         setDate(value) {
             this.date = value;
