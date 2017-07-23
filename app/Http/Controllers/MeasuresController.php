@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Measure;
 use App\Type;
 
@@ -35,22 +34,18 @@ class MeasuresController extends Controller
     /**
      * Store a new measure value.
      *
-     * @param Request $request
-     *
      * @return mixed
      */
-    public function post(Request $request)
+    public function post()
     {
-        $this->validate($request, [
-            'date'     => 'required|',
+        $this->validate(request(), [
+            'date'     => 'required',
             'value'    => 'required',
             'type_id'  => 'required|exists:types,id',
         ]);
 
-        $measure = new Measure();
-        $measure->fill($request->all());
-        $measure->save();
+        $measure = Measure::create(request(['date', 'value', 'type_id']));
 
-        return response()->json([]);
+        return $measure;
     }
 }

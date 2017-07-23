@@ -21,6 +21,7 @@
 </template>
 
 <script>
+
 import Datepicker from 'vue-bulma-datepicker'
 
 export default {
@@ -43,13 +44,13 @@ export default {
                 'type_id': this.$parent.type.id
             })
             .then(response => {
-                this.$emit('success', this.$data);
+                this.$emit('success', response.data);
                 this.isLoading = false;
                 this.date = '';
                 this.value = '';
             })
             .catch(errors => {
-                console.log(errors);
+                console.error(errors);
                 this.isLoading = false;
             });
         },

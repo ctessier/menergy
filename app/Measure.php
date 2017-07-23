@@ -46,6 +46,11 @@ class Measure extends Model
         return $this->belongsTo(Type::class);
     }
 
+    /**
+     * Set the date of the measure from a d/m/Y formatted string.
+     *
+     * @param string $value
+     */
     public function setDateAttribute($value)
     {
         $this->attributes['date'] = Carbon::createFromFormat('d/m/Y', $value);
@@ -54,10 +59,15 @@ class Measure extends Model
     /**
      * The date of the measure as a formatted string.
      *
-     * @return string
+     * @return string Date with format d/m/Y
      */
     public function getDateAttribute()
     {
-        return Carbon::createFromFormat('Y-m-d', $this->attributes['date'])->format('d/m/Y');
+        $date = $this->attributes['date'];
+        if ($date instanceof Carbon) {
+            $date = $date->format('Y-m-d');
+        }
+
+        return Carbon::createFromFormat('Y-m-d', $date)->format('d/m/Y');
     }
 }

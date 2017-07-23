@@ -1,6 +1,6 @@
 <template>
     <div v-show="this.isActive">
-        <menergy-form @success="pushData"></menergy-form>
+        <menergy-form @success="fetchData"></menergy-form>
         <table class="table is-striped">
             <thead>
                 <th>Date de la relève</th>
@@ -12,7 +12,7 @@
                         <span class="tag is-primary">Récuparation des données...</span>
                     </td>
                 </tr>
-                <tr v-for="measure in data">
+                <tr v-for="measure in data" :class="{ new: measure.id === newItem.id }">
                     <td>{{ measure.date }}</td>
                     <td>{{ measure.value }}</td>
                 </tr>
@@ -31,6 +31,7 @@ export default {
         return {
             isActive: false,
             isFetching: false,
+            newItem: {},
             data: []
         }
     },
@@ -41,23 +42,23 @@ export default {
         }
     },
     methods: {
-        fetchData() {
-            if (this.data.length === 0) {
+        fetchData(newItem) {
+            if (this.data.length === 0 || newItem !== undefined) {
                 this.isFetching = true;
                 axios.get('/types/' + this.type.id)
                     .then(response => {
                         this.data = response.data;
                         this.isFetching = false;
+                        if (newItem !== undefined) {
+                            this.newItem = newItem;
+                        }
                     })
                     .catch(errors => {
                         alert('An error occurred. See logs');
-                        console.log(errors);
+                        console.error(errors);
                         this.isFetching = false;
                     });
             }
-        },
-        pushData(data) {
-            this.data.unshift(data);
         }
     }
 }
