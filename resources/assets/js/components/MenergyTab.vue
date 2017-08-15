@@ -26,10 +26,12 @@
 
 <script>
 
+import MenergyForm from './MenergyForm.vue';
 import MenergyPagination from './MenergyPagination.vue';
 
 export default {
     components: {
+        MenergyForm,
         MenergyPagination
     },
     props: {

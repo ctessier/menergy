@@ -3,15 +3,17 @@
         <div class="column is-3">
             <div class="field">
                 <p class="control">
-                    <datepicker placeholder="Date" :config="{ dateFormat: 'd/m/Y', static: false }" v-model="date" @input="setDate"></datepicker>
+                    <datepicker :class="{ 'is-danger': errors.date }" placeholder="Date" :config="{ dateFormat: 'd/m/Y', static: false }" v-model="date" @input="setDate"></datepicker>
                 </p>
+                <p class="help is-danger" v-for="error in errors.date">{{ error }}</p>
             </div>
         </div>
         <div class="column is-3">
             <div class="field">
                 <p class="control">
-                    <input type="text" :placeholder="'Relève (en ' + $parent.type.unity + ')'" class="input" v-model="value" />
+                    <input type="text" :placeholder="'Relève (en ' + $parent.type.unity + ')'" class="input" :class="{ 'is-danger': errors.value }" v-model="value" />
                 </p>
+                <p class="help is-danger" v-for="error in errors.value">{{ error }}</p>
             </div>
         </div>
         <div class="column is-2">
@@ -30,14 +32,16 @@ export default {
     },
     data() {
         return {
+            isLoading: false,
             date: '',
             value: '',
-            isLoading: false
+            errors: {}
         };
     },
     methods: {
         submitForm() {
             this.isLoading = true;
+            this.errors = {};
             axios.post('/measures', {
                 'date': this.date,
                 'value': this.value,
@@ -47,9 +51,13 @@ export default {
                 this.$emit('success', response.data);
                 this.resetForm();
             })
-            .catch(errors => {
-                console.error(errors);
+            .catch(error => {
                 this.isLoading = false;
+                if (error.response.status === 422) {
+                    this.errors = error.response.data;
+                } else {
+                    console.error(error);
+                }
             });
         },
         resetForm() {

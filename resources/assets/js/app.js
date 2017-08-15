@@ -13,7 +13,6 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('menergy-form', require('./components/MenergyForm.vue'));
 Vue.component('menergy-tabs', require('./components/MenergyTabs.vue'));
 Vue.component('menergy-tab', require('./components/MenergyTab.vue'));
 

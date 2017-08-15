@@ -146,6 +146,9 @@ return [
         'time'                  => 'heure',
         'available'             => 'disponible',
         'size'                  => 'taille',
+
+        // Custom attributes
+        'value'                 => 'relève',
     ],
 
 ];
