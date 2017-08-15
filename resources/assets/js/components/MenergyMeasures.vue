@@ -1,5 +1,5 @@
 <template>
-    <div v-show="this.isActive">
+    <div>
         <menergy-form @success="fetchData"></menergy-form>
         <table class="table is-striped">
             <thead>
@@ -26,32 +26,29 @@
 
 <script>
 
-import MenergyPagination from './MenergyPagination.vue';
+import MenergyForm from './MenergyForm'
+import MenergyPagination from './MenergyPagination'
 
 export default {
     components: {
+        MenergyForm,
         MenergyPagination
     },
     props: {
-        type: { type: Object, required: true },
-        selected: { default: false }
+        type: { type: Object, required: true }
     },
     data() {
         return {
             apiEndpoint: '/types/' + this.type.id,
             currentDataUrl: null,
-            isActive: false,
             newItem: null,
             data: {},
             measures: []
         }
     },
     created() {
-        this.isActive = this.selected;
         this.currentDataUrl = this.apiEndpoint;
-        if (this.isActive) {
-            this.fetchData();
-        }
+        this.fetchData();
     },
     methods: {
         fetchData(newItem) {
