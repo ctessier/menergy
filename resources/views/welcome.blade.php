@@ -17,13 +17,7 @@
         <link rel="stylesheet" type="text/css" href="{{ mix('/css/app.css') }}">
     </head>
     <body>
-        <div id="app" class="container">
-            <menergy-tabs>
-                @foreach ($types as $type)
-                    <menergy-tab :type="{{ $type }}" @if ($loop->first) :selected="true" @endif></menergy-tab>
-                @endforeach
-            </menergy-tabs>
-        </div>
+        <div id="app"></div>
 
         <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
     </body>

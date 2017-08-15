@@ -1,10 +1,10 @@
 <template>
     <nav class="pagination is-centered">
-        <a class="pagination-previous" v-if="prev_page_url" @click="onClickPreviousOrNext(prev_page_url)">Précédent</a>
-        <a class="pagination-next" v-if="next_page_url" @click="onClickPreviousOrNext(next_page_url)">Suivant</a>
+        <router-link :to="getUrl(current_page - 1)" class="pagination-previous" v-if="current_page > 1">Précédent</router-link>
+        <router-link :to="getUrl(current_page + 1)" class="pagination-next" v-if="current_page < nb_page">Suivant</router-link>
         <ul class="pagination-list">
             <li v-for="i in nb_page">
-                <a @click="onClickPage" :data-page="i" :class="['pagination-link', { 'is-current': i == current_page }]">{{ i }}</a>
+                <router-link :to="getUrl(i)" :class="['pagination-link', { 'is-current': i == current_page }]">{{ i }}</router-link>
             </li>
         </ul>
     </nav>
@@ -13,19 +13,13 @@
 <script>
 export default {
     props: {
-        prev_page_url: { required: true },
-        next_page_url: { required: true },
+        base_url: { type: String, required: true },
         current_page: { required: true },
         nb_page: { required: true }
     },
     methods: {
-        onClickPreviousOrNext(url) {
-            var parts = url.split("?");
-            this.$emit('changePage', parts[1]);
-        },
-        onClickPage(e) {
-            var page = e.target.getAttribute('data-page');
-            this.$emit('changePage', 'page=' + page);
+        getUrl(page) {
+            return this.base_url + '/' + page;
         }
     }
 }
