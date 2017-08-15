@@ -4,28 +4,40 @@ import MenergyGaz from '../components/MenergyGaz'
 
 const routes = [
     {
-        name: 'Electricity',
         path: '/electricity',
         component: MenergyElectricity,
         props: {
             type: {
                 id: 1,
                 name: 'Electricité',
+                icon: 'bolt',
                 unity: 'kWh'
             }
-        }
+        },
+        children: [
+            {
+                path: ':page(\\d+)',
+                component: MenergyElectricity
+            }
+        ]
     },
     {
-        name: 'Gaz',
         path: '/gaz',
         component: MenergyGaz,
         props: {
             type: {
                 id: 2,
                 name: 'Gaz',
+                icon: 'fire',
                 unity: "m3"
             }
-        }
+        },
+        children: [
+            {
+                path: ':page(\\d+)',
+                component: MenergyGaz
+            }
+        ]
     },
     {
         path: '*',

@@ -15,11 +15,9 @@
         </table>
 
         <menergy-pagination
-                :prev_page_url="data.prev_page_url"
-                :next_page_url="data.next_page_url"
+                :base_url="$route.matched[0].path"
                 :current_page="data.current_page"
-                :nb_page="data.last_page"
-                @changePage="changePage">
+                :nb_page="data.last_page">
         </menergy-pagination>
     </div>
 </template>
@@ -47,11 +45,19 @@ export default {
         }
     },
     created() {
-        this.currentDataUrl = this.apiEndpoint;
+        this.currentDataUrl = this.apiEndpoint + '?page=' + this.getPage();
         this.fetchData();
     },
+    watch: {
+        // call again the method if the route changes
+        '$route': 'fetchData'
+    },
     methods: {
+        getPage() {
+            return this.$route.params.page ? this.$route.params.page : 1;
+        },
         fetchData(newItem) {
+            this.currentDataUrl = this.apiEndpoint + '?page=' + this.getPage();
             axios.get(this.currentDataUrl)
                 .then(response => {
                     this.data = response.data;
@@ -64,10 +70,6 @@ export default {
                     alert('An error occurred. See logs');
                     console.error(errors);
                 });
-        },
-        changePage(params) {
-            this.currentDataUrl = this.apiEndpoint + '?' + params;
-            this.fetchData();
         }
     }
 }

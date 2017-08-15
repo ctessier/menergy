@@ -4,7 +4,7 @@
             <ul>
                 <router-link v-for="route in routes" :to="route.path" tag="li">
                     <a>
-                        <span class="icon is-medium"><i class="fa fa-bolt"></i></span>
+                        <span class="icon is-medium"><i :class="'fa fa-' + route.icon"></i></span>
                         <span>{{ route.name }}</span>
                     </a>
                 </router-link>
@@ -22,6 +22,7 @@
                 if (route.props && route.props.type) {
                     this.routes.push({
                         name: route.props.type.name,
+                        icon: route.props.type.icon,
                         path: route.path
                     })
                 }
