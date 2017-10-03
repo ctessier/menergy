@@ -32,6 +32,29 @@ class MeasuresController extends Controller
     }
 
     /**
+     * Return a full array of measures with dates and measures as a key for the given type.
+     *
+     * @param integer $type_id
+     *
+     * @return mixed
+     */
+    public function chart($type_id)
+    {
+        $measures = Measure::where('type_id', $type_id)
+            ->orderBy('date')
+            ->get();
+
+        return [
+            'dates' => $measures->map(function ($measure) {
+                return \Carbon\Carbon::createFromFormat('d/m/Y', $measure->date)->format('Y-m-d');
+            }),
+            'measures' => $measures->map(function ($measure) {
+                return $measure->value;
+            }),
+        ];
+    }
+
+    /**
      * Store a new measure value.
      *
      * @return mixed
