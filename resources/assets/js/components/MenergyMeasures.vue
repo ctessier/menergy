@@ -1,29 +1,28 @@
 <template>
     <div>
-        <menergy-form @success="fetchData"></menergy-form>
-        <table class="table is-striped">
+        <menergy-form />
+        <table class="table is-striped" v-if="measures.length">
             <thead>
                 <th>Date de la relève</th>
                 <th>Relève (en {{ type.unity }})</th>
             </thead>
             <tbody>
-                <tr v-for="measure in measures" :class="{ new: newItem && measure.id === newItem.id }">
-                    <td>{{ measure.date }}</td>
+                <tr v-for="measure in measures" :class="{ 'new': measure.is_new }">
+                    <td>{{ measure.date | date }}</td>
                     <td>{{ measure.value }}</td>
                 </tr>
             </tbody>
         </table>
-
         <menergy-pagination
-                :base_url="$route.matched[0].path"
-                :current_page="data.current_page"
-                :nb_page="data.last_page">
+            :baseUrl="$route.matched[0].path"
+            :currentPage="currentPage"
+            :nbPages="nbPages">
         </menergy-pagination>
     </div>
 </template>
 
 <script>
-
+import { mapGetters } from 'vuex'
 import MenergyForm from './MenergyForm'
 import MenergyPagination from './MenergyPagination'
 
@@ -33,43 +32,35 @@ export default {
         MenergyPagination
     },
     props: {
-        type: { type: Object, required: true }
+        type: { type: Object, required: true },
+        itemsPerPage: { type: Number, default: 10 }
+    },
+    computed: {
+        ...mapGetters([
+            'measuresByType'
+        ]),
+        measures: function () {
+            const offset = (this.currentPage - 1) * this.itemsPerPage
+            return this.measuresByType(this.type.id).slice(offset, offset + this.itemsPerPage)
+        },
+        nbPages: function () {
+            return Math.ceil(this.measuresByType(this.type.id).length / this.itemsPerPage)
+        }
+    },
+    methods: {
+        changePage: function () {
+            this.currentPage = parseInt(this.$route.params.page)
+        }
+    },
+    watch: {
+        '$route': 'changePage'
+    },
+    beforeMount() {
+        this.$store.dispatch('getMeasures', this.type.id)
     },
     data() {
         return {
-            apiEndpoint: '/types/' + this.type.id,
-            currentDataUrl: null,
-            newItem: null,
-            data: {},
-            measures: []
-        }
-    },
-    created() {
-        this.currentDataUrl = this.apiEndpoint + '?page=' + this.getPage();
-        this.fetchData();
-    },
-    watch: {
-        // call again the method if the route changes
-        '$route': 'fetchData'
-    },
-    methods: {
-        getPage() {
-            return this.$route.params.page ? this.$route.params.page : 1;
-        },
-        fetchData(newItem) {
-            this.currentDataUrl = this.apiEndpoint + '?page=' + this.getPage();
-            axios.get(this.currentDataUrl)
-                .then(response => {
-                    this.data = response.data;
-                    this.measures = this.data.data;
-                    if (newItem !== undefined) {
-                        this.newItem = newItem;
-                    }
-                })
-                .catch(errors => {
-                    alert('An error occurred. See logs');
-                    console.error(errors);
-                });
+            currentPage: this.$route.params.page ? parseInt(this.$route.params.page) : 1
         }
     }
 }

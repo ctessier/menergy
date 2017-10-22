@@ -15,16 +15,20 @@ require('./bootstrap');
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import router from './router'
 import MenergyApp from './MenergyApp'
+import router from './router'
+import store from './store'
+import { date } from './filters'
 
 Vue.use(VueRouter)
+Vue.filter('date', date)
 
 const app = new Vue({
     el: '#app',
-    router,
     template: '<MenergyApp/>',
     components: {
         MenergyApp
-    }
+    },
+    router,
+    store
 });
