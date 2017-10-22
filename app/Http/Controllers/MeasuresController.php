@@ -28,7 +28,7 @@ class MeasuresController extends Controller
     {
         return Measure::where('type_id', $type_id)
             ->orderBy('date', 'DESC')
-            ->paginate(10);
+            ->get();
     }
 
     /**
