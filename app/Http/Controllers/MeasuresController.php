@@ -27,7 +27,6 @@ class MeasuresController extends Controller
     public function get($type_id)
     {
         return Measure::where('type_id', $type_id)
-            ->orderBy('date', 'DESC')
             ->get();
     }
 
